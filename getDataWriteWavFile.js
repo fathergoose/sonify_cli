@@ -1,15 +1,16 @@
 const axios = require('axios');
 const WaveFile = require('wavefile');
 const fs = require('fs');
+const argv = require('yargs').argv
 
 // API Params
-const DATE = "2019-05-30"
-const TIME = "09:00:00"
-const STATION = 'L44A'
-const NET = 'NW'
-const LOCATION = '00'
-const CHANNEL = 'HHZ'
-const DURATION = "7200"  // 2 hours
+const DATE = argv.date || "2019-05-30"
+const TIME = argv.time || "09:00:00"
+const STATION = argv.sta || 'L44A'
+const NET = argv.net || 'NW'
+const LOCATION = argv.loc || '00'
+const CHANNEL = argv.cha || 'HHZ'
+const DURATION = argv.duration || "7200"  // 2 hours
 const url = "https://service.iris.edu/irisws/timeseries/1/query";
 
 // Math Params
@@ -34,8 +35,12 @@ const params = {
   output: 'ascii1'
 }
 
+
 const config = { url, params }; 
-console.log(axios.getUri(config));
+if (argv.debug) {
+  console.log("Request Params: ", params);
+  console.log("URI: ", axios.getUri(config));
+}
 
 axios.request(config).then(resp => {
   const responseLines = resp.data.split('\n');
@@ -54,5 +59,5 @@ axios.request(config).then(resp => {
   const effectiveSampleRate = sampleRate * SPEED_FACTOR;
   const wav = new WaveFile();
   wav.fromScratch(CHANNEL_COUNT, effectiveSampleRate, BIT_DEPTH, soundData);
-  fs.writeFileSync('./output.wav', wav.toBuffer());
+  fs.writeFileSync(`./output/${NET}-${STATION}-${LOCATION}-${CHANNEL}-${params.starttime}-${DURATION}.wav`, wav.toBuffer());
 }).catch(e => console.log(e))

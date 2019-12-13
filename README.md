@@ -1,5 +1,16 @@
+# Sonify CLI
+
+## Installation
+Requires [nodeJS](https://nodejs.org/en/download/)
 ```shell
 npm install
-node getDataWriteWavFile.js
+./sonify
 open output.wav
 ```
+
+## Usage
+To see available options:
+```shell
+./sonify --help
+```
+

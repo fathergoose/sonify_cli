@@ -1,0 +1,17 @@
+#!/usr/bin/env node
+
+const argv = require('yargs').help(false).argv
+if (argv.help) {
+  console.log('Debug Info')
+  console.log('\t--debug')
+  console.log('Request Params')
+  console.log('\t--date=<YYYY-MM-DD>\tstartDate')
+  console.log('\t--time=<HH:MM:SS>\tstartTime')
+  console.log('\t--sta\t\t\tstation')
+  console.log('\t--net\t\t\tnetwork')
+  console.log('\t--loc\t\t\tlocation')
+  console.log('\t--cha\t\t\tchannel')
+  console.log('\t--duration\t\tduration')
+} else {
+  require('./getDataWriteWavFile.js');
+}
